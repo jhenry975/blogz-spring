@@ -16,7 +16,15 @@ public class BlogController extends AbstractController {
 		
 		// TODO - fetch users and pass to template
 		
+		//MY CODE//
+		List<User> u = userDao.findAll();
+		model.addAttribute("users", u);
+		//return "redirect:/blog/index";
+		//return "redirect:index";
+		//END MY CODE//
+		
 		return "index";
+		//return "redirect:/index";
 	}
 	
 	@RequestMapping(value = "/blog")
@@ -24,7 +32,14 @@ public class BlogController extends AbstractController {
 		
 		// TODO - fetch posts and pass to template
 		
+		//MY CODE//
+		List<Post> p = postDao.findAll();
+		model.addAttribute("posts", p);
+		//return "redirect:blog";
+		//END MY CODE//
+		
 		return "blog";
+		//return "redirect:/blog";
 	}
 	
 }

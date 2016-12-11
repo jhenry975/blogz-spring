@@ -22,7 +22,27 @@ public class AuthenticationController extends AbstractController {
 		
 		// TODO - implement signup
 		
+		//MY CODE//
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		String verify = request.getParameter("verify");
+		
+		if(User.isValidUsername(username) && User.isValidPassword(password))
+		{
+			if(verify.equals(password))
+			{
+				User user = new User(username, password);
+				
+				HttpSession session = request.getSession();
+				setUserInSession( session, user);
+				userDao.save(user);
+			}
+		}
+		
+		//END MY CODE//
+		
 		return "redirect:blog/newpost";
+		//return "redirect:newpost";
 	}
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -35,12 +55,32 @@ public class AuthenticationController extends AbstractController {
 		
 		// TODO - implement login
 		
+		//MY CODE//
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		//System.console();
+		
+		User u = userDao.findByUsername(username);
+		if(u.isMatchingPassword(password))
+		{
+				HttpSession session = request.getSession();
+				setUserInSession( session, u);
+		}
+		else
+		{
+			model.addAttribute("${error}", "Incorrect Password");
+			return "redirect:/blog/login";
+		}
+		//END MY CODE//
+		
 		return "redirect:blog/newpost";
+		//return "newpost";
 	}
 	
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout(HttpServletRequest request){
         request.getSession().invalidate();
 		return "redirect:/";
+        //return "redirect:/blog/login";
 	}
 }
